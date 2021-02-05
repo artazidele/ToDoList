@@ -44,28 +44,18 @@ class TodoTableViewController: UIViewController, UITableViewDelegate, UITableVie
             textField.autocapitalizationType = .sentences
             textField.autocorrectionType = .no
         }
-       
-        //let textFieldForTitle = alertController.textFields?.first
-       /* alertController.addTextField { (textFieldForSteps: UITextField) in
-            textFieldForSteps.placeholder = "Enter steps of your task!"
-            textFieldForSteps.autocapitalizationType = .sentences
-            textFieldForSteps.autocorrectionType = .no
-        }*/
-        //let textFieldForSteps = alertController.textFields?.first
-        
-        
+        alertController.addTextField { (textField: UITextField) in
+            textField.placeholder = "Enter steps of your task!"
+            textField.autocapitalizationType = .sentences
+            textField.autocorrectionType = .no
+        }
         let addAction = UIAlertAction(title: "Add", style: .cancel) { (action: UIAlertAction) in
-            let textField = alertController.textFields?.first
+            let textFieldForTitle = alertController.textFields?.first
+            let textFieldForSteps = alertController.textFields?.last
             let entity = NSEntityDescription.entity(forEntityName: "Todo", in: self.context!)
             let item = NSManagedObject(entity: entity!, insertInto: self.context)
-            item.setValue(textField?.text, forKey: "item")
-            //let textFieldForSteps = alertController.textFields?.first
-            //let task = NSManagedObject(entity: entity!, insertInto: self.context)
-            //task.setValue(textFieldForSteps?.text, forKey: "task")
-           // task.setValue("Subtitle", forKey: "task")
-            
-            //save function
-            
+            item.setValue(textFieldForTitle?.text, forKey: "item")
+            item.setValue(textFieldForSteps?.text, forKey: "task")
             self.saveData()
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: nil)
@@ -73,6 +63,32 @@ class TodoTableViewController: UIViewController, UITableViewDelegate, UITableVie
         alertController.addAction(addAction)
         present(alertController, animated: true)
     }
+    /*private func addNewItem() {
+        let alertController = UIAlertController(title: "Add New Task", message: "What do you want to add?", preferredStyle: .alert)
+        alertController.addTextField { (textField: UITextField) in
+          textField.placeholder = "Enter title"
+          textField.autocapitalizationType = .sentences
+          textField.autocorrectionType = .no
+        }
+        alertController.addTextField { (textField: UITextField) in
+          textField.placeholder = "Enter description"
+          textField.autocapitalizationType = .sentences
+          textField.autocorrectionType = .no
+        }
+        let addAction = UIAlertAction(title: "Add", style: .cancel) { (action: UIAlertAction) in
+          let textField = alertController.textFields?.first
+          let textFieldSecond = alertController.textFields?.last
+          let entity = NSEntityDescription.entity(forEntityName: "Todo", in: self.context!)
+          let item = NSManagedObject(entity: entity!, insertInto: self.context!)
+          item.setValue(textField?.text, forKey: "item")
+          item.setValue(textFieldSecond?.text, forKey: "task")
+          self.saveData()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive, handler: nil)
+        alertController.addAction(cancelAction)
+        alertController.addAction(addAction)
+        present(alertController, animated: true)
+    }*/
         
     
     
@@ -107,17 +123,26 @@ class TodoTableViewController: UIViewController, UITableViewDelegate, UITableVie
             return todoList.count
         }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //let cell = tableView.dequeueReusableCell(withIdentifier: "todoCell", for: indexPath)
-        let cell: UITableViewCell = UITableViewCell(style: UITableViewCell.CellStyle.subtitle, reuseIdentifier: "todoCell")
+        let cell = tableView.dequeueReusableCell(withIdentifier: "todoCell", for: indexPath)
+        //let cell: UITableViewCell = UITableViewCell(style: UITableViewCell.CellStyle.subtitle, reuseIdentifier: "todoCell")
         let item = todoList[indexPath.row]
             
-            cell.textLabel?.text = item.value(forKey: "item") as? String
-            //cell.detailTextLabel?.text = item.value(forKey: "task") as? String
-            cell.detailTextLabel?.text = "Subtitle"
-            cell.accessoryType = item.completed ? .checkmark: .none
-            cell.selectionStyle = .none
-            return cell
-        }
+        cell.textLabel?.text = item.value(forKey: "item") as? String
+        cell.detailTextLabel?.text = item.value(forKey: "task") as? String
+        //cell.detailTextLabel?.text = "Subtitle"
+        cell.accessoryType = item.completed ? .checkmark: .none
+        cell.selectionStyle = .none
+        return cell
+    }
+    /*func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+          let cell = tableView.dequeueReusableCell(withIdentifier: "todoCell",for: indexPath)
+          let item = todoList[indexPath.row]
+          cell.textLabel?.text = item.value(forKey: "item") as? String
+          cell.detailTextLabel?.text = item.value(forKey: "task") as? String
+          cell.accessoryType = item.completed ? .checkmark : .none
+          cell.selectionStyle = .none
+          return cell
+        }*/
     
     //MARK: - Table view delegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
