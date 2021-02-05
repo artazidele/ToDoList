@@ -56,11 +56,12 @@
                     <navigationItem key="navigationItem" title="To Do List" id="pJm-i8-axU">
                         <barButtonItem key="rightBarButtonItem" image="plus.app" catalog="system" id="lZf-pb-fkI">
                             <connections>
-                                <action selector="addNewItemTapped:" destination="BYZ-38-t0r" id="5BW-lJ-aLP"/>
+                                <action selector="addNewItemTapped:" destination="BYZ-38-t0r" id="s4e-BM-z4e"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="tabView" destination="CeR-xX-Jc1" id="IcV-O8-7uM"/>
                         <outlet property="tableView" destination="CeR-xX-Jc1" id="8qs-VC-nkp"/>
                     </connections>
                 </viewController>
